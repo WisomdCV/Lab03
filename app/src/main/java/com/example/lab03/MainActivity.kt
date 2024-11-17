@@ -5,32 +5,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Slider
-import androidx.compose.material3.Switch
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -39,6 +19,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.lab03.ui.theme.Lab03Theme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,6 +28,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Lab03Theme {
+                val snackbarHostState = remember { SnackbarHostState() }
+                val scope = rememberCoroutineScope()
+
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     floatingActionButton = {
@@ -58,9 +43,14 @@ class MainActivity : ComponentActivity() {
                                 contentDescription = "Añadir elemento"
                             )
                         }
-                    }
+                    },
+                    snackbarHost = { SnackbarHost(snackbarHostState) }
                 ) { innerPadding ->
-                    GreetingCard(modifier = Modifier.padding(innerPadding))
+                    GreetingCard(
+                        modifier = Modifier.padding(innerPadding),
+                        snackbarHostState = snackbarHostState,
+                        scope = scope
+                    )
                 }
             }
         }
@@ -68,7 +58,11 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun GreetingCard(modifier: Modifier = Modifier) {
+fun GreetingCard(
+    modifier: Modifier = Modifier,
+    snackbarHostState: SnackbarHostState,
+    scope: CoroutineScope
+) {
     var name by remember { mutableStateOf("") }
     var isSwitchOn by remember { mutableStateOf(false) }
     var sliderValue by remember { mutableStateOf(0.5f) }
@@ -187,10 +181,27 @@ fun GreetingCard(modifier: Modifier = Modifier) {
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "Este curso te ayudara a aprender los fundamentos de Jetpack Compose y a construir interfaces modernas.",
+                        text = "Este curso te ayudará a aprender los fundamentos de Jetpack Compose y a construir interfaces modernas.",
                         fontSize = 14.sp
                     )
                 }
+            }
+        }
+        item {
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+        item {
+            Button(onClick = {
+                scope.launch {
+                    val result = snackbarHostState.showSnackbar(
+                        message = "Acción realizada correctamente",
+                        actionLabel = "OK"
+                    )
+                    if (result == SnackbarResult.ActionPerformed) {
+                    }
+                }
+            }) {
+                Text("Mostrar Snackbar")
             }
         }
     }
@@ -199,7 +210,9 @@ fun GreetingCard(modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewGreetingCard() {
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
     Lab03Theme {
-        GreetingCard()
+        GreetingCard(snackbarHostState = snackbarHostState, scope = scope)
     }
 }
