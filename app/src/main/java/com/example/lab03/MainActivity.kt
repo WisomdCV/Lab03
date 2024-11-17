@@ -47,6 +47,8 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun GreetingCard(modifier: Modifier = Modifier) {
+    var name by remember { mutableStateOf("") }
+
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
@@ -64,8 +66,19 @@ fun GreetingCard(modifier: Modifier = Modifier) {
         }
         item {
             Text(
-                text = "Hola, Wisom!",
+                text = "Hola, $name!",
                 fontSize = 20.sp
+            )
+        }
+        item {
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+        item {
+            TextField(
+                value = name,
+                onValueChange = { name = it },
+                label = { Text("Ingresa tu nombre") },
+                modifier = Modifier.fillMaxWidth()
             )
         }
         item {
