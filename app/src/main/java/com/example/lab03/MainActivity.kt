@@ -85,6 +85,20 @@ fun GreetingCard(modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(16.dp))
         }
         item {
+            Image(
+                painter = painterResource(id = R.drawable.snorlax),
+                contentDescription = "Imagen del curso",
+                modifier = Modifier
+                    .size(150.dp)
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp),
+                alignment = Alignment.Center
+            )
+        }
+        item {
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+        item {
             Button(onClick = {  }) {
                 Text("Accede al curso")
             }
