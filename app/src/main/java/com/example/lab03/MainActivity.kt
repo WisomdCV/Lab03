@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -45,35 +46,27 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun GreetingCard(modifier: Modifier = Modifier) {
-    Column(
+    LazyColumn(
         modifier = modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .fillMaxSize()
+            .padding(16.dp)
     ) {
-        Text(
-            text = "¡Bienvenido al curso!",
-            fontSize = 28.sp,
-            fontWeight = FontWeight.Bold
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = "Hola, Wisom!",
-            fontSize = 20.sp
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        var text by remember { mutableStateOf("") }
-        TextField(
-            value = text,
-            onValueChange = { text = it },
-            label = { Text("Ingresa tu nombre") }
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Image(
-            painter = painterResource(id = R.drawable.snorlax),
-            contentDescription = "Imagen del curso",
-            modifier = Modifier.size(100.dp)
-        )
+        item {
+            Text(
+                text = "¡Bienvenido al curso!",
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
+        item {
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+        item {
+            Text(
+                text = "Hola, Wisom!",
+                fontSize = 20.sp
+            )
+        }
     }
 }
 
