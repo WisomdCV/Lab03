@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -48,7 +50,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun GreetingCard(modifier: Modifier = Modifier) {
     var name by remember { mutableStateOf("") }
-
+    var isSwitchOn by remember { mutableStateOf(false) }
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
@@ -91,8 +93,7 @@ fun GreetingCard(modifier: Modifier = Modifier) {
                 modifier = Modifier
                     .size(150.dp)
                     .fillMaxWidth()
-                    .padding(vertical = 16.dp),
-                alignment = Alignment.Center
+                    .padding(vertical = 16.dp)
             )
         }
         item {
@@ -101,6 +102,25 @@ fun GreetingCard(modifier: Modifier = Modifier) {
         item {
             Button(onClick = {  }) {
                 Text("Accede al curso")
+            }
+        }
+        item {
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+        item {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Descuento activo",
+                    modifier = Modifier.weight(1f),
+                    fontSize = 16.sp
+                )
+                Switch(
+                    checked = isSwitchOn,
+                    onCheckedChange = { isSwitchOn = it }
+                )
             }
         }
     }
