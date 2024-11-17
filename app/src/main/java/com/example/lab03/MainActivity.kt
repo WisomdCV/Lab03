@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -51,6 +52,8 @@ class MainActivity : ComponentActivity() {
 fun GreetingCard(modifier: Modifier = Modifier) {
     var name by remember { mutableStateOf("") }
     var isSwitchOn by remember { mutableStateOf(false) }
+    var sliderValue by remember { mutableStateOf(0.5f) }
+
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
@@ -100,7 +103,7 @@ fun GreetingCard(modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(16.dp))
         }
         item {
-            Button(onClick = {  }) {
+            Button(onClick = { }) {
                 Text("Accede al curso")
             }
         }
@@ -120,6 +123,26 @@ fun GreetingCard(modifier: Modifier = Modifier) {
                 Switch(
                     checked = isSwitchOn,
                     onCheckedChange = { isSwitchOn = it }
+                )
+            }
+        }
+        item {
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+        item {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "Nivel de progreso: ${(sliderValue * 100).toInt()}%",
+                    fontSize = 16.sp
+                )
+                Slider(
+                    value = sliderValue,
+                    onValueChange = { sliderValue = it },
+                    valueRange = 0f..1f,
+                    modifier = Modifier.padding(horizontal = 16.dp)
                 )
             }
         }
